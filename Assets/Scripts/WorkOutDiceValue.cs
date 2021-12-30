@@ -9,6 +9,8 @@ namespace BoardGame.Dice
     {
         [SerializeField] float stationaryTime = 5f;
         [SerializeField] private float isStationaryMovement = .5f;
+        [SerializeField] private Material normalColour;
+        [SerializeField] private Material highlightColour;
         private float timeStationary = 0f;
         private Rigidbody rb;
         private void Start()
@@ -46,6 +48,21 @@ namespace BoardGame.Dice
             {
                 timeStationary = 0f;
             }
+        }
+
+        public void ChangeColour(bool highlight)
+        {
+            Material colour;
+            if (highlight)
+            {
+                colour = highlightColour;
+            }
+            else
+            {
+                colour = normalColour;
+            }
+
+            GetComponent<Renderer>().material = colour;
         }
 
         private bool IsStationary()

@@ -18,6 +18,7 @@ namespace BoardGame.Dice
         {
             foreach (DiceRoll die in dice)
             {
+                die.GetComponent<WorkOutDiceValue>().ChangeColour(false);
                 die.RollDice();
             }
         }
