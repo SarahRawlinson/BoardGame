@@ -351,7 +351,7 @@ GameObject:
   - component: {fileID: 3524133200250984226}
   - component: {fileID: 3524133200250984229}
   m_Layer: 5
-  m_Name: Dice Value Panel
+  m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -833,7 +833,7 @@ GameObject:
   - component: {fileID: 3737067075561807348}
   - component: {fileID: 3317476374173326617}
   m_Layer: 5
-  m_Name: Player Postion Panel
+  m_Name: Panel (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
