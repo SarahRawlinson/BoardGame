@@ -31,6 +31,11 @@ public class RandomPositions : MonoBehaviour
     private Transform[] _transformsPositions;
     private LineRenderer _lineRenderer;
 
+    public Vector3 NextPosition(int moves)
+    {
+        return _transformsPositions[moves].position;
+    }
+
     void Start()
     {
         _lineRenderer = GetComponent<LineRenderer>();
@@ -178,5 +183,11 @@ public class RandomPositions : MonoBehaviour
     {
         Vector3 scale=terrainData.heightmapScale;
         return (float)terrainData.GetHeight((int)(point.x/scale.x),(int)(point.y/scale.z));
+    }
+
+    public int GetPosition(int playerPosition)
+    {
+        if (playerPosition >= _transformsPositions.Length) return _transformsPositions.Length - 1;
+        return playerPosition;
     }
 }

@@ -7,20 +7,31 @@ namespace BoardGame.Dice
 {
     public class RollAllDice : MonoBehaviour
     {
-        private DiceRoll[] dice;
+        private DieRoll[] dice;
+        public event Action DiceRolled;
+        public event Action DiceRollStarted;
 
         private void Start()
         {
-            dice = FindObjectsOfType<DiceRoll>();
+            dice = FindObjectsOfType<DieRoll>();
+            FindObjectOfType<WorkOutDiceValue>().DiceRolled += DiceRollFinished;
+        }
+
+        private void DiceRollFinished(int obj)
+        {
+            DiceRolled?.Invoke();
         }
 
         public void RollDice()
         {
-            foreach (DiceRoll die in dice)
+            DiceRollStarted?.Invoke();
+            WorkOutDiceValue workOutDiceValue = FindObjectOfType<WorkOutDiceValue>();
+            foreach (DieRoll die in dice)
             {
-                die.GetComponent<WorkOutDiceValue>().ChangeColour(false);
+                die.GetComponent<WorkOutDieValue>().ChangeColour(false);
                 die.RollDice();
             }
+            workOutDiceValue.Roll();
         }
     }
 }

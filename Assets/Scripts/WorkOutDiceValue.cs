@@ -1,74 +1,76 @@
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using BoardGame.Dice;
 using UnityEngine;
 
 namespace BoardGame.Dice
 {
-    public class WorkOutDiceValue : MonoBehaviour
+    public class WorkOutDiceValue: MonoBehaviour
     {
-        [SerializeField] float stationaryTime = 5f;
-        [SerializeField] private float isStationaryMovement = .5f;
-        [SerializeField] private Material normalColour;
-        [SerializeField] private Material highlightColour;
-        private float timeStationary = 0f;
-        private Rigidbody rb;
+        public event Action<int> DiceRolled; 
+        private WorkOutDieValue[] dice;
+        private bool rollComplete = true;
+        private bool ShouldRoll = false;
         private void Start()
         {
-            rb = GetComponent<Rigidbody>();
-        }
-
-        public int GetDiceValue()
-        {
-            
-            DiceValue correctDiceValue = GetComponentInChildren<DiceValue>();
-            foreach (DiceValue diceValue in GetComponentsInChildren<DiceValue>())
-            {
-                if (diceValue.transform.position.y > correctDiceValue.transform.position.y)
-                {
-                    correctDiceValue = diceValue;  
-                }
-            }
-            return correctDiceValue.GetDiceValue();
-            
-        }
-
-        public bool IsStationaryForTime()
-        {
-            return timeStationary > stationaryTime;
+            dice = FindObjectsOfType<WorkOutDieValue>();
         }
 
         private void Update()
         {
-            if (IsStationary())
+            if (ShouldRoll)
             {
-                timeStationary += Time.deltaTime;
-            }
-            else
-            {
-                timeStationary = 0f;
+                ShouldRoll = !HasRolled();
             }
         }
 
-        public void ChangeColour(bool highlight)
+        public void Roll()
         {
-            Material colour;
-            if (highlight)
-            {
-                colour = highlightColour;
-            }
-            else
-            {
-                colour = normalColour;
-            }
-
-            GetComponent<Renderer>().material = colour;
+            ShouldRoll = true;
         }
 
-        private bool IsStationary()
+        public bool HasRolled()
         {
-            return Mathf.Abs(rb.velocity.x) < isStationaryMovement;
+            GetDiceValue();
+            return rollComplete;
+        }
+        public void GetDiceValue()
+        {
+            rollComplete = true;
+            int values = 0;
+            List<int> diceValues = new List<int>();
+            foreach (WorkOutDieValue die in dice)
+            {
+                diceValues.Add(die.GetDiceValue());
+                if (!die.IsStationaryForTime()) rollComplete = false;
+                values += die.GetDiceValue();
+                die.ChangeColour(false);
+            }
+
+            if (rollComplete)
+            {
+                DiceRolled?.Invoke(values);
+                IEnumerable<int> duplicates = diceValues.GroupBy(x => x)
+                    .Where(g => g.Count() > 1)
+                    .Select(x => x.Key);
+
+                //Debug.Log("Duplicate elements are: " + String.Join(",", duplicates));
+                if (duplicates.Count() > 0)
+                {
+                    foreach (WorkOutDieValue die in dice)
+                    {
+                        if (duplicates.ToList().Contains(die.GetDiceValue()))
+                        {
+                            die.ChangeColour(true);
+                        }
+                        else
+                        {
+                            die.ChangeColour(false);
+                        }
+                    }
+                }
+            }
         }
     }
-
 }

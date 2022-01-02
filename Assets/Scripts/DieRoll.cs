@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DiceRoll : MonoBehaviour
+public class DieRoll : MonoBehaviour
 {
     private Vector3 diceStartPosition;
 

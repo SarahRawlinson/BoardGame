@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace BoardGame.Dice
 {
-    public class DiceValue : MonoBehaviour
+    public class DieValue : MonoBehaviour
     {
         [SerializeField] private int diceValue;
 

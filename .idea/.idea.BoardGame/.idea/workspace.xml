@@ -5,12 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1638dd89-7720-4496-a84d-b13a60cb51b0" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/WorkOutDieValue.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/WorkOutDieValue.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.BoardGame/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.BoardGame/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Dice.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Dice.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Dice Throw.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Dice Throw.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DiceRoll.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DieRoll.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DiceRoll.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DieRoll.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DiceValue.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DieValue.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/DiceValue.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DieValue.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/DiceValueUI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/DiceValueUI.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/RandomPositions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/RandomPositions.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/RollAllDice.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/RollAllDice.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/WorkOutDiceValue.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/WorkOutDiceValue.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/WorkOutDiceValue.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/WorkOutDiceValue.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +32,7 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/PositionUI.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/RandomPositions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/Sarah Rawlinson/Documents/GitHub/BoardGame/Assets/Scripts/WorkOutDiceValue.cs.meta" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="22xtZzzdGU6Ex89bGnMxt6HmJ4L" />
   <component name="ProjectViewState">
@@ -71,7 +81,8 @@
       <option name="presentableId" value="Default" />
       <updated>1640791128009</updated>
       <workItem from="1640791135301" duration="10800000" />
-      <workItem from="1640885029755" duration="7481000" />
+      <workItem from="1640885029755" duration="8080000" />
+      <workItem from="1641138385948" duration="7944000" />
     </task>
     <servers />
   </component>
