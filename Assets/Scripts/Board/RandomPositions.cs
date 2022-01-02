@@ -1,8 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using BoardGame.UI;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-public class RandomPositions : MonoBehaviour
+namespace BoardGame.Board
+{
+    public class RandomPositions : MonoBehaviour
 {
     class Position
     {
@@ -19,7 +23,7 @@ public class RandomPositions : MonoBehaviour
     }
     [SerializeField] private GameObject startPosition;
 
-    [SerializeField] private GameObject endPositions;
+    [FormerlySerializedAs("endPositions")] [SerializeField] private GameObject endPosition;
 
     [SerializeField] private int numberOfPositions = 10;
     [SerializeField] private GameObject positionPrefab;
@@ -36,7 +40,7 @@ public class RandomPositions : MonoBehaviour
         return _transformsPositions[moves].position;
     }
 
-    void Start()
+    void Awake()
     {
         _lineRenderer = GetComponent<LineRenderer>();
         CreatePositions();
@@ -64,7 +68,7 @@ public class RandomPositions : MonoBehaviour
         GameObject startPos = startPosition;
         positionsList.Add(new Position(0, startPos, startPos.transform));
         positionsAllocated.Add(startPos);
-        GameObject endPos = endPositions;
+        GameObject endPos = endPosition;
         positionsList.Add(new Position(actualPositionsLength-1, endPos, endPos.transform));
         positionsAllocated.Add(endPos);
         bool alocationComplete = false;
@@ -123,7 +127,9 @@ public class RandomPositions : MonoBehaviour
     {
         for (int i = 0; i < points.Length; i++)
         {
-            _lineRenderer.SetPosition(i,points[i].position);
+            Vector3 pos = points[i].position;
+            pos.y += 1;
+            _lineRenderer.SetPosition(i,pos);
         }
     }
 
@@ -135,6 +141,8 @@ public class RandomPositions : MonoBehaviour
         float MaxX = position.x - ((position.x) + terrain.terrainData.size.x);
         float MinZ = position.z + terrain.terrainData.size.z;
         float MaxZ = position.z - ((position.z) + terrain.terrainData.size.z);
+        startPosition.transform.position =  RandomTerrainPosition(MinX, MaxX, MinZ, MaxZ, terrain);
+        endPosition.transform.position =  RandomTerrainPosition(MinX, MaxX, MinZ, MaxZ, terrain);
         int i;
         for (i = 0; i < (numberOfPositions - 2); i++)
         {
@@ -191,3 +199,5 @@ public class RandomPositions : MonoBehaviour
         return playerPosition;
     }
 }
+}
+
