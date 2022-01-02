@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace BoardGame.Dice
@@ -11,17 +8,17 @@ namespace BoardGame.Dice
         [SerializeField] private float isStationaryMovement = .5f;
         [SerializeField] private Material normalColour;
         [SerializeField] private Material highlightColour;
-        private float timeStationary = 0f;
-        private Rigidbody rb;
+        private float _timeStationary;
+        private Rigidbody _rb;
         private void Start()
         {
             FindObjectOfType<RollAllDice>().DiceRollStarted += ResetStationaryTime;
-            rb = GetComponent<Rigidbody>();
+            _rb = GetComponent<Rigidbody>();
         }
 
         private void ResetStationaryTime()
         {
-            timeStationary = 0f;
+            _timeStationary = 0f;
         }
 
         public int GetDiceValue()
@@ -41,39 +38,30 @@ namespace BoardGame.Dice
 
         public bool IsStationaryForTime()
         {
-            return timeStationary > stationaryTime;
+            return _timeStationary > stationaryTime;
         }
 
         private void Update()
         {
             if (IsStationary())
             {
-                timeStationary += Time.deltaTime;
+                _timeStationary += Time.deltaTime;
             }
             else
             {
-                timeStationary = 0f;
+                _timeStationary = 0f;
             }
         }
 
         public void ChangeColour(bool highlight)
         {
-            Material colour;
-            if (highlight)
-            {
-                colour = highlightColour;
-            }
-            else
-            {
-                colour = normalColour;
-            }
-
+            Material colour = highlight ? highlightColour : normalColour;
             GetComponent<Renderer>().material = colour;
         }
 
         private bool IsStationary()
         {
-            return Mathf.Abs(rb.velocity.x) < isStationaryMovement;
+            return Mathf.Abs(_rb.velocity.x) < isStationaryMovement;
         }
         
     }

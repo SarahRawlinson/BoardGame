@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using BoardGame.Player;
 using TMPro;
 using UnityEngine;
@@ -13,7 +11,7 @@ namespace BoardGame.UI
         // Start is called before the first frame update
         void Start()
         {
-            FindObjectOfType<GameDirector>().PlayerMove += SetPlayerText;
+            FindObjectOfType<PlayerDirector>().PlayerMove += SetPlayerText;
         }
 
         private void SetPlayerText(int obj)

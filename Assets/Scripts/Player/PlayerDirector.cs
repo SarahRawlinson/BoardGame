@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using BoardGame.Board;
 using BoardGame.Dice;
 using UnityEngine;
@@ -8,7 +6,7 @@ using UnityEngine.UI;
 
 namespace BoardGame.Player
 {
-    public class GameDirector : MonoBehaviour
+    public class PlayerDirector : MonoBehaviour
     {
         enum GameState
         {
@@ -18,23 +16,23 @@ namespace BoardGame.Player
         }
 
         public event Action<int> PlayerMove;
-        private GameState currentState = GameState.PlayerWait;
+        private GameState _currentState = GameState.PlayerWait;
         [SerializeField] private Button rollButton;
-        private bool isMoving = false;
+        private bool _isMoving;
         [SerializeField] private GameObject player;
-        private int playerPosition = 0;
+        private int _playerPosition;
 
         private void Start()
         {
             FindObjectOfType<WorkOutDiceValue>().DiceRolled += PlayerMoves;
-            playerPosition = FindObjectOfType<RandomPositions>().GetPosition(playerPosition);
-            Vector3 newPos = FindObjectOfType<RandomPositions>().NextPosition(playerPosition);
+            _playerPosition = FindObjectOfType<RandomPositions>().GetPosition(_playerPosition);
+            Vector3 newPos = FindObjectOfType<RandomPositions>().NextPosition(_playerPosition);
             player.transform.position = new Vector3(newPos.x, player.transform.position.y, newPos.z);
         }
 
         private void Update()
         {
-            switch (currentState)
+            switch (_currentState)
             {
                 case GameState.PlayerMove:
                     MovePlayer();
@@ -46,19 +44,20 @@ namespace BoardGame.Player
                     WaitForPlayer();
                     break;
                 default:
+                    Debug.Log("Unknown State Has Activated");
                     break;
             }
         }
 
         void PlayerMoves(int move)
         {
-            playerPosition += move;
-            playerPosition = FindObjectOfType<RandomPositions>().GetPosition(playerPosition);
-            Vector3 newPos = FindObjectOfType<RandomPositions>().NextPosition(playerPosition);
+            _playerPosition += move;
+            _playerPosition = FindObjectOfType<RandomPositions>().GetPosition(_playerPosition);
+            Vector3 newPos = FindObjectOfType<RandomPositions>().NextPosition(_playerPosition);
 
             player.transform.position = new Vector3(newPos.x, player.transform.position.y, newPos.z);
-            isMoving = false;
-            PlayerMove?.Invoke(playerPosition + 1);
+            _isMoving = false;
+            PlayerMove?.Invoke(_playerPosition + 1);
         }
 
         private void WaitForPlayer()
@@ -66,7 +65,7 @@ namespace BoardGame.Player
             rollButton.enabled = true;
             FindObjectOfType<RollAllDice>().DiceRollStarted += DiceRollStarted;
             FindObjectOfType<RollAllDice>().DiceRolled += DiceRollComplete;
-            currentState = GameState.PlayerRoll;
+            _currentState = GameState.PlayerRoll;
         }
 
         private void DiceRollStarted()
@@ -78,7 +77,7 @@ namespace BoardGame.Player
         private void DiceRollComplete()
         {
             FindObjectOfType<RollAllDice>().DiceRolled -= DiceRollComplete;
-            currentState = GameState.PlayerMove;
+            _currentState = GameState.PlayerMove;
         }
 
         private void RollPlayer()
@@ -88,7 +87,7 @@ namespace BoardGame.Player
 
         void MovePlayer()
         {
-            if (!isMoving) currentState = GameState.PlayerWait;
+            if (!_isMoving) _currentState = GameState.PlayerWait;
         }
     }
 }

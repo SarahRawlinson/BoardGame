@@ -1,8 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using BoardGame.UI;
 using UnityEngine;
 using UnityEngine.Serialization;
+// ReSharper disable Unity.PreferNonAllocApi
 
 namespace BoardGame.Board
 {
@@ -10,15 +10,15 @@ namespace BoardGame.Board
 {
     class Position
     {
-        public int index;
-        public GameObject positionGameObject;
-        public Transform transformPos;
+        public readonly int Index;
+        public readonly GameObject PositionGameObject;
+        public readonly Transform TransformPos;
 
         public Position(int i, GameObject gameObject, Transform transform)
         {
-            index = i;
-            positionGameObject = gameObject;
-            transformPos = transform;
+            Index = i;
+            PositionGameObject = gameObject;
+            TransformPos = transform;
         }
     }
     [SerializeField] private GameObject startPosition;
@@ -29,9 +29,9 @@ namespace BoardGame.Board
     [SerializeField] private GameObject positionPrefab;
     [SerializeField] private float padding = 10f;
     [SerializeField] private int tryAttemptsToCreate = 50;
-    private int actualPositionsLength = 0;
-    private List<Position> positionsList = new List<Position>();
-    private List<GameObject> positions = new List<GameObject>();
+    private int _actualPositionsLength;
+    private readonly List<Position> _positionsList = new List<Position>();
+    private readonly List<GameObject> _positions = new List<GameObject>();
     private Transform[] _transformsPositions;
     private LineRenderer _lineRenderer;
 
@@ -51,30 +51,30 @@ namespace BoardGame.Board
 
     private void CreateLineTransforms()
     {
-        _transformsPositions = new Transform[actualPositionsLength];
-        foreach (Position position in positionsList)
+        _transformsPositions = new Transform[_actualPositionsLength];
+        foreach (Position position in _positionsList)
         {
-            position.positionGameObject.GetComponent<PositionUI>().SetLabel((position.index + 1).ToString());
+            position.PositionGameObject.GetComponent<PositionUI>().SetLabel((position.Index + 1).ToString());
             //Debug.Log($"position {position.index.ToString()}");
-            _transformsPositions[position.index] = position.transformPos;
+            _transformsPositions[position.Index] = position.TransformPos;
         }
     }
 
     private void SortPositions()
     {
         
-        List<GameObject> positionsToAllocate = positions;
+        List<GameObject> positionsToAllocate = _positions;
         List<GameObject> positionsAllocated = new List<GameObject>();
         GameObject startPos = startPosition;
-        positionsList.Add(new Position(0, startPos, startPos.transform));
+        _positionsList.Add(new Position(0, startPos, startPos.transform));
         positionsAllocated.Add(startPos);
         GameObject endPos = endPosition;
-        positionsList.Add(new Position(actualPositionsLength-1, endPos, endPos.transform));
+        _positionsList.Add(new Position(_actualPositionsLength-1, endPos, endPos.transform));
         positionsAllocated.Add(endPos);
-        bool alocationComplete = false;
+        bool allocationComplete = false;
         int startIndex = 0;
-        int endIndex = actualPositionsLength-1;
-        while (!alocationComplete)
+        int endIndex = _actualPositionsLength-1;
+        while (!allocationComplete)
         {
             GameObject closestToStart = positionsToAllocate[0];
             GameObject closestToEnd = positionsToAllocate[^1];
@@ -103,14 +103,14 @@ namespace BoardGame.Board
             positionsToAllocate.Remove(closestToEnd);
             startIndex += 1;
             endIndex -= 1;
-            positionsList.Add(new Position(startIndex,closestToStart,closestToStart.transform));
-            positionsList.Add(new Position(endIndex,closestToEnd,closestToEnd.transform));
+            _positionsList.Add(new Position(startIndex,closestToStart,closestToStart.transform));
+            _positionsList.Add(new Position(endIndex,closestToEnd,closestToEnd.transform));
 
-            if (positionsAllocated.Count == actualPositionsLength) alocationComplete = true;
-            if (positionsAllocated.Count == actualPositionsLength - 1)
+            if (positionsAllocated.Count == _actualPositionsLength) allocationComplete = true;
+            if (positionsAllocated.Count == _actualPositionsLength - 1)
             {
-                positionsList.Add(new Position(startIndex + 1,positionsToAllocate[0],positionsToAllocate[0].transform));
-                alocationComplete = true;
+                _positionsList.Add(new Position(startIndex + 1,positionsToAllocate[0],positionsToAllocate[0].transform));
+                allocationComplete = true;
             }
         }
     }
@@ -137,12 +137,13 @@ namespace BoardGame.Board
     {
         Terrain terrain = GetComponent<Terrain>();
         Vector3 position = terrain.transform.position;
-        float MinX = position.x + terrain.terrainData.size.x;
-        float MaxX = position.x - ((position.x) + terrain.terrainData.size.x);
-        float MinZ = position.z + terrain.terrainData.size.z;
-        float MaxZ = position.z - ((position.z) + terrain.terrainData.size.z);
-        startPosition.transform.position =  RandomTerrainPosition(MinX, MaxX, MinZ, MaxZ, terrain);
-        endPosition.transform.position =  RandomTerrainPosition(MinX, MaxX, MinZ, MaxZ, terrain);
+        var terrainData = terrain.terrainData;
+        float minX = position.x + terrainData.size.x;
+        float maxX = position.x - ((position.x) + terrainData.size.x);
+        float minZ = position.z + terrainData.size.z;
+        float maxZ = position.z - ((position.z) + terrainData.size.z);
+        startPosition.transform.position =  RandomTerrainPosition(minX, maxX, minZ, maxZ, terrain);
+        endPosition.transform.position =  RandomTerrainPosition(minX, maxX, minZ, maxZ, terrain);
         int i;
         for (i = 0; i < (numberOfPositions - 2); i++)
         {
@@ -150,12 +151,12 @@ namespace BoardGame.Board
             int countTry = 0;
             while (!noCollisions && countTry < tryAttemptsToCreate)
             {
-                Vector3 vector3 = RandomTerrainPosition(MinX, MaxX, MinZ, MaxZ, terrain);
+                Vector3 vector3 = RandomTerrainPosition(minX, maxX, minZ, maxZ, terrain);
                 Collider[] colliders = Physics.OverlapSphere(vector3, padding * 2);
                 noCollisions = true;
-                foreach (Collider collider in colliders)
+                foreach (Collider colliderCollision in colliders)
                 {
-                    if (!collider.TryGetComponent(out Terrain hitTerrain))
+                    if (!colliderCollision.TryGetComponent(out Terrain _))
                     {
                         noCollisions = false;
                         break;
@@ -164,7 +165,7 @@ namespace BoardGame.Board
                 if (noCollisions)
                 {
                     GameObject newPosition = Instantiate(positionPrefab, vector3, Quaternion.identity);
-                    positions.Add(newPosition);
+                    _positions.Add(newPosition);
                     Debug.Log("position added");
                 }
                 else
@@ -174,23 +175,23 @@ namespace BoardGame.Board
                 countTry += 1;
             }
         }
-        actualPositionsLength = positions.Count + 2;
-        Debug.Log((actualPositionsLength).ToString());
+        _actualPositionsLength = _positions.Count + 2;
+        Debug.Log((_actualPositionsLength).ToString());
     }
 
-    private static Vector3 RandomTerrainPosition(float MinX, float MaxX, float MinZ, float MaxZ, Terrain terrain)
+    private static Vector3 RandomTerrainPosition(float minX, float maxX, float minZ, float maxZ, Terrain terrain)
     {
-        float randX = UnityEngine.Random.Range(MinX, MinX + MaxX);
-        float randZ = UnityEngine.Random.Range(MinZ, MinZ + MaxZ);
+        float randX = Random.Range(minX, minX + maxX);
+        float randZ = Random.Range(minZ, minZ + maxZ);
         Vector2 vector2 = new Vector2(randX, randZ);
         Vector3 vector3 = new Vector3(randX, GetHeightWorldCoords(terrain.terrainData, vector2), randZ);
         return vector3;
     }
 
-    public static float GetHeightWorldCoords(TerrainData terrainData,Vector2 point)
+    private static float GetHeightWorldCoords(TerrainData terrainData,Vector2 point)
     {
         Vector3 scale=terrainData.heightmapScale;
-        return (float)terrainData.GetHeight((int)(point.x/scale.x),(int)(point.y/scale.z));
+        return terrainData.GetHeight((int)(point.x/scale.x),(int)(point.y/scale.z));
     }
 
     public int GetPosition(int playerPosition)

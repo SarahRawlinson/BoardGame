@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BoardGame.Dice;
 using UnityEngine;
 
 namespace BoardGame.Dice
@@ -9,46 +8,47 @@ namespace BoardGame.Dice
     public class WorkOutDiceValue: MonoBehaviour
     {
         public event Action<int> DiceRolled; 
-        private WorkOutDieValue[] dice;
-        private bool rollComplete = true;
-        private bool ShouldRoll = false;
+        private WorkOutDieValue[] _dice;
+        private bool _rollComplete = true;
+        private bool _shouldRoll;
         private void Start()
         {
-            dice = FindObjectsOfType<WorkOutDieValue>();
+            _dice = FindObjectsOfType<WorkOutDieValue>();
         }
 
         private void Update()
         {
-            if (ShouldRoll)
+            if (_shouldRoll)
             {
-                ShouldRoll = !HasRolled();
+                _shouldRoll = !HasRolled();
             }
         }
 
         public void Roll()
         {
-            ShouldRoll = true;
+            _shouldRoll = true;
         }
 
-        public bool HasRolled()
+        private bool HasRolled()
         {
             GetDiceValue();
-            return rollComplete;
+            return _rollComplete;
         }
-        public void GetDiceValue()
+
+        private void GetDiceValue()
         {
-            rollComplete = true;
+            _rollComplete = true;
             int values = 0;
             List<int> diceValues = new List<int>();
-            foreach (WorkOutDieValue die in dice)
+            foreach (WorkOutDieValue die in _dice)
             {
                 diceValues.Add(die.GetDiceValue());
-                if (!die.IsStationaryForTime()) rollComplete = false;
+                if (!die.IsStationaryForTime()) _rollComplete = false;
                 values += die.GetDiceValue();
                 die.ChangeColour(false);
             }
 
-            if (rollComplete)
+            if (_rollComplete)
             {
                 DiceRolled?.Invoke(values);
                 IEnumerable<int> duplicates = diceValues.GroupBy(x => x)
@@ -56,18 +56,12 @@ namespace BoardGame.Dice
                     .Select(x => x.Key);
 
                 //Debug.Log("Duplicate elements are: " + String.Join(",", duplicates));
-                if (duplicates.Count() > 0)
+                List<int> duplicateList = duplicates.ToList();
+                if (duplicateList.Any())
                 {
-                    foreach (WorkOutDieValue die in dice)
+                    foreach (WorkOutDieValue die in _dice)
                     {
-                        if (duplicates.ToList().Contains(die.GetDiceValue()))
-                        {
-                            die.ChangeColour(true);
-                        }
-                        else
-                        {
-                            die.ChangeColour(false);
-                        }
+                        die.ChangeColour(duplicateList.ToList().Contains(die.GetDiceValue()));
                     }
                 }
             }
