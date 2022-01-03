@@ -35,6 +35,10 @@ namespace BoardGame.Board
     private Transform[] _transformsPositions;
     private LineRenderer _lineRenderer;
 
+    public int GetDesiredPositions()
+    {
+        return numberOfPositions;
+    }
     public Vector3 NextPosition(int moves)
     {
         return _transformsPositions[moves].position;
@@ -66,9 +70,11 @@ namespace BoardGame.Board
         List<GameObject> positionsToAllocate = _positions;
         List<GameObject> positionsAllocated = new List<GameObject>();
         GameObject startPos = startPosition;
+        
         _positionsList.Add(new Position(0, startPos, startPos.transform));
         positionsAllocated.Add(startPos);
         GameObject endPos = endPosition;
+        
         _positionsList.Add(new Position(_actualPositionsLength-1, endPos, endPos.transform));
         positionsAllocated.Add(endPos);
         bool allocationComplete = false;
@@ -135,6 +141,8 @@ namespace BoardGame.Board
 
     private void CreatePositions()
     {
+        startPosition.GetComponent<PositionSpace>().SetPositionAction(true,false);
+        endPosition.GetComponent<PositionSpace>().SetPositionAction(false,true);
         Terrain terrain = GetComponent<Terrain>();
         Vector3 position = terrain.transform.position;
         var terrainData = terrain.terrainData;
@@ -165,8 +173,9 @@ namespace BoardGame.Board
                 if (noCollisions)
                 {
                     GameObject newPosition = Instantiate(positionPrefab, vector3, Quaternion.identity);
+                    newPosition.GetComponent<PositionSpace>().SetPositionAction(false,false);
                     _positions.Add(newPosition);
-                    Debug.Log("position added");
+                    //Debug.Log("position added");
                 }
                 else
                 {
@@ -197,6 +206,7 @@ namespace BoardGame.Board
     public int GetPosition(int playerPosition)
     {
         if (playerPosition >= _transformsPositions.Length) return _transformsPositions.Length - 1;
+        if (playerPosition <= 0) return 0;
         return playerPosition;
     }
 }

@@ -372,10 +372,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2934120321880603812, guid: 6a6579e407da37e4b95b5adb6f592e24, type: 3}
-      propertyPath: numberOfPositions
-      value: 100
-      objectReference: {fileID: 0}
     - target: {fileID: 2934120321880603813, guid: 6a6579e407da37e4b95b5adb6f592e24, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -437,10 +433,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 32137972}
-    - target: {fileID: 3524133199068829220, guid: 5ba1df0949431fc47a8516c17b8fcb3f, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: RollDice
-      objectReference: {fileID: 0}
     - target: {fileID: 3524133200013428497, guid: 5ba1df0949431fc47a8516c17b8fcb3f, type: 3}
       propertyPath: m_Name
       value: Canvas

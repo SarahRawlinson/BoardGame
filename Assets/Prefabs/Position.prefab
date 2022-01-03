@@ -222,6 +222,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8016996097031349273}
   - component: {fileID: 6156982233551441499}
+  - component: {fileID: 6929473337650940180}
   m_Layer: 0
   m_Name: Position
   m_TagString: Untagged
@@ -259,6 +260,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   positionText: {fileID: 4593195685794808906}
+--- !u!114 &6929473337650940180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3933716543918253660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0dcf3e4240c14684fbd345f621d824c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  exampleMaterial: {fileID: 2100000, guid: 4371f749c3f4f5741aab743941c605fa, type: 2}
+  _thisPosition: 5
 --- !u!1 &4587339818476042082
 GameObject:
   m_ObjectHideFlags: 0
@@ -286,7 +301,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4587339818476042082}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: -0.2}
+  m_LocalPosition: {x: 0, y: 0, z: 5.55}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

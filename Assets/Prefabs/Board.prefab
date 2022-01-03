@@ -181,7 +181,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startPosition: {fileID: 8496834035393629597}
   endPosition: {fileID: 2175037106606214267}
-  numberOfPositions: 50
+  numberOfPositions: 100
   positionPrefab: {fileID: 3933716543918253660, guid: 31fb64af9b7b5d14a926e6caa7a43214, type: 3}
   padding: 3
   tryAttemptsToCreate: 50
